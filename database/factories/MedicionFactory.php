@@ -3,6 +3,7 @@
 /** @var \Illuminate\Database\Eloquent\Factory $factory */
 
 use App\Medicion;
+use App\Raspberry;
 use Faker\Generator as Faker;
 
 $factory->define(Medicion::class, function (Faker $faker) {

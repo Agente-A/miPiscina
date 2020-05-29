@@ -8,11 +8,11 @@
         <div class="container">
             <hr>
             <div class="row">
-                @forelse ($piscinas as $item)
+                @forelse ($piscinas as $piscina)
                     @php
                         // determinar el estado de la piscina para aplicar un color a la tarjeta
                         $status = "";
-                        switch ($item->condicion->ID_CONDICION) {
+                        switch ($piscina->condicion->ID_CONDICION) {
                             case '1':
                                 $status = "bg-danger";
                                 break;
@@ -28,8 +28,9 @@
                         <div class="card text-center text-light {{$status}}">
                             <img class="card-img-top" src="holder.js/100x180/" alt="">
                             <div class="card-body">
-                                <h4 class="card-title">{{ $item->NOMBRE }}</h4>
-                                <p class="card-text">{{ $item->condicion->CONDICION }}</p>
+                                <h4 class="card-title">{{ $piscina->NOMBRE }}</h4>
+                                <p class="card-text">{{ $piscina->condicion->CONDICION }}</p>
+                                <a class="nav-item nav-link text-white" href="{{ route('piscina.show',$piscina->ID_PISCINA) }}">Administrar</a>
                             </div>
                         </div>
                     </div>
