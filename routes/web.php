@@ -22,3 +22,7 @@ Route::get('/admin/registro', 'AdministradorController@create')
 
     // Registro de admin en la DB
 Route::post('/admin/','AdministradorController@store');
+
+
+Route::get('/piscina/{piscina}/administrar','PiscinaController@show')
+    ->name('piscina.show');

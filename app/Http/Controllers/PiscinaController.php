@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Piscina;
+use App\Medicion;
 use Illuminate\Http\Request;
 
 class PiscinaController extends Controller
@@ -48,9 +49,14 @@ class PiscinaController extends Controller
      * @param  \App\Piscina  $piscina
      * @return \Illuminate\Http\Response
      */
-    public function show(Piscina $piscina)
+    public function show($id)
     {
-        //
+        $piscina = Piscina::where('id_piscina',$id)->first();
+        $mediciones = Medicion::where('ID_RASPBERRY',$piscina->raspberry->ID_RASPBERRY)
+                                ->orderBy('FECHA_Y_HORA','DESC')
+                                ->get();
+        //$mediciones = $piscina->raspberry->mediciones->sortBy('FECHA_Y_HORA');
+        return view('Piscina.administrar', compact('piscina','mediciones'));
     }
 
     /**
