@@ -14,7 +14,7 @@ class CondicionPiscinaSeeder extends Seeder
     {
         DB::statement('SET FOREIGN_KEY_CHECKS = 0;');   // Desactivar comprovación de claves foraneas
         ConP::truncate();
-        DB::statement('SET FOREIGN_KEY_CHECKS = 01;');   // Activar comprovación de claves foraneas
+        DB::statement('SET FOREIGN_KEY_CHECKS = 1;');   // Activar comprovación de claves foraneas
         
         ConP::create([
             'condicion' =>  'malo'
