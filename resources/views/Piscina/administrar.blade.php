@@ -2,6 +2,8 @@
 
 @section('page_title') Bienvenido! :D @endsection
 @section('main')
+<!--<link rel="stylesheet" href="{{ asset('assets/css/Piscina/administrar.css') }}" type="text/css">-->
+
 {{-- Información de la piscna --}}
 
 @php
@@ -42,7 +44,7 @@ switch ($piscina->condicion->ID_CONDICION) {
     <div class="row">
       <div class="col-md-12">
         <div class="table-responsive">
-          <table id="tablaPersonas" class="table table-striped table-bordered table-condensed" style="width:100%">
+          <table class="table table-bordered table-condensed table-responsive-md table-hover" style="height: 50px; overflow-y: scroll;">
             <thead class="text-center">
               <tr>
                 <th>Fecha y Hora</th>
@@ -50,15 +52,34 @@ switch ($piscina->condicion->ID_CONDICION) {
                 <th>PH</th>
               </tr>
             </thead>
-            <tbody class="text-center">
+            <div class="overflow-auto">
+              <tbody class="text-center my-tbody">
                 @forelse ($mediciones as $md)
-                    <tr>
-                        <td>{{$md->FECHA_Y_HORA}}</td>
-                        <td>{{$md->CLORO}}</td>
-                        <td>{{$md->PH}}</td>
-                    </tr>
+                  @php
+                    // determinar el estado del cloro para aplicar un color a la fila
+                    $stdCloro = "";
+                    switch ($md->getEstadoCloro()) {
+                        case '1':
+                            $stdCloro = "table-danger";
+                            break;
+                        case '2':
+                    }
+                    // determinar el estado del cloro para aplicar un color a la fila
+                    $stdPh = "";
+                    switch ($md->getEstadoPh()) {
+                        case '1':
+                            $stdPh = "table-danger";
+                            break;
+                    }
+                  @endphp
+                  <tr>
+                      <td>{{$md->FECHA_Y_HORA}}</td>
+                      <td class="{{$stdCloro}}">{{$md->CLORO}}</td>
+                      <td class="{{$stdPh}}">{{$md->PH}}</td>
+                  </tr>
                 @endforeach
-            </tbody>
+              </tbody>      
+            </div>
           </table>
         </div>
       </div>
