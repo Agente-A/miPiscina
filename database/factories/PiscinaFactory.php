@@ -13,6 +13,6 @@ $factory->define(Piscina::class, function (Faker $faker) {
         'nombre'        =>  $faker  ->  regexify('Piscina [A-Z0-9]+'),
         'tamano'        =>  $faker  ->  numberBetween($min = 1000, $max = 9000),
         'condicion'     =>  CondicionPiscina::inRandomOrder()->value('ID_CONDICION'),
-        'id_admin'      =>  Administrador::inRandomOrder()->value('ID_ADMIN')
+        'id_admin'      =>  Administrador::inRandomOrder()->value('ID_ADMIN'),
     ];
 });
