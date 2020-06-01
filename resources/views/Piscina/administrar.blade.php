@@ -38,7 +38,7 @@ switch ($piscina->condicion->ID_CONDICION) {
         </div>
     </div>
     <br>
-
+<br><br>
 {{-- Tabla de mediciones --}}
 
     <div class="row">

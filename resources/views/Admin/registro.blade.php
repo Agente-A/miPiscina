@@ -16,7 +16,7 @@
                 <h3>registro de administrador </h3>
                 <form method="POST" action="{{ url('/admin/') }}">
                     {{ csrf_field() }}
-                    <fieldset class="form-group">
+                      <fieldset class="form-group">
                         <div class="form-row">
                             <div class="form-group col-lg">
                               <label for="nom" class="">Nombre:</label>

@@ -10,8 +10,8 @@ class Raspberry extends Model
 
     public $timestamps = false;             // Desactivar timestamps al insertar a la DB
 
-    protected $filable = [                  // Dejar que el usuario pueda introducir estos parametros
-
+    protected $fillable = [                  // Dejar que el usuario pueda introducir estos parametros
+        'id_raspberry','estado',
     ];
 
     // Relaciones

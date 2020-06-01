@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Raspberry;
 use App\Piscina;
 use App\Medicion;
 use Illuminate\Http\Request;
@@ -29,7 +30,7 @@ class PiscinaController extends Controller
      */
     public function create()
     {
-        //
+        return view('Piscina.registrar');
     }
 
     /**
@@ -40,7 +41,31 @@ class PiscinaController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $data = request()->validate([  //Solicitar Datos y validarlos
+            'nom'       =>  'required',
+            'tamano'    =>  'required',
+            'sensor'    =>  'required'
+        ],[                             //Mensajes de error en caso de fallo de validación
+            'nom.required'      =>  'El campo nombre es obligatorio!',
+            'tamano.required'   =>  'El campo tamaño es obligatorio!',
+            'sensor.required'   =>  'El campo sensor es obligatorio!',
+        ]);
+
+        if (!Raspberry::where('id_raspberry', '=', $data['sensor'])->exists()) {
+            Raspberry::create([
+                'id_raspberry'  =>  $data['sensor'],
+                'estado'        =>  '1'
+            ]);
+         }
+
+        Piscina::create([         // Crear Administrador
+            'nombre'        =>  $data['nom'],
+            'tamano'        =>  $data['tamano'],
+            'id_raspberry'  =>  $data['sensor'],
+            'condicion'     =>  '4'
+        ]);
+
+        return redirect()->route('index');
     }
 
     /**
@@ -88,8 +113,10 @@ class PiscinaController extends Controller
      * @param  \App\Piscina  $piscina
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Piscina $piscina)
+    public function destroy($id)
     {
-        //
+        $piscina = Piscina::where('id_piscina',$id)->delete();
+
+        return redirect()->route('index');
     }
 }
