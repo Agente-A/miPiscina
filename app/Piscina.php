@@ -3,6 +3,7 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use App\Mediciones;
 
 class Piscina extends Model
 {
@@ -29,5 +30,14 @@ class Piscina extends Model
     public function raspberry()
     {
         return $this->hasOne('App\Raspberry', 'ID_RASPBERRY', 'ID_RASPBERRY');
+    }
+
+    public function mediciones()
+    {
+        $mediciones = Medicion::where('ID_RASPBERRY',$this->raspberry->ID_RASPBERRY)
+                                ->orderBy('FECHA_Y_HORA','DESC')
+                                ->get();
+        //$mediciones = $piscina->raspberry->mediciones->sortBy('FECHA_Y_HORA');
+        return $mediciones;
     }
 }

@@ -77,12 +77,10 @@ class PiscinaController extends Controller
     public function show($id)
     {
         $piscina = Piscina::where('id_piscina',$id)->first();
-        $mediciones = Medicion::where('ID_RASPBERRY',$piscina->raspberry->ID_RASPBERRY)
-                                ->orderBy('FECHA_Y_HORA','DESC')
-                                ->get();
+        $mediciones = $piscina->mediciones();
         //$mediciones = $piscina->raspberry->mediciones->sortBy('FECHA_Y_HORA');
         return view('Piscina.administrar', compact('piscina','mediciones'));
-    }
+    } 
 
     /**
      * Show the form for editing the specified resource.

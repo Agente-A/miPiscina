@@ -14,3 +14,4 @@ $factory->define(Medicion::class, function (Faker $faker) {
         'ph'            =>  $faker  -> randomFloat($nbMaxDecimals = 2, $min = 6, $max = 9)
     ];
 });
+ 

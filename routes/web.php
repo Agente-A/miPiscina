@@ -13,6 +13,9 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+
+
+
 Route::get('/', 'PiscinaController@index')
     ->name('index');
 
@@ -37,3 +40,6 @@ Route::post('/piscina/','PiscinaController@store');
     // Eliminar piscina
 Route::delete('/piscina/{piscina}', 'PiscinaController@destroy')
     ->name('Piscina.destroy');
+
+        // Ajax
+Route::post('/ajax/','AjaxController@index')->name('ajax.index');

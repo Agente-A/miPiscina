@@ -3,6 +3,48 @@
 @section('page_title') Bienvenido! :D @endsection
 @section('main')
 <!--<link rel="stylesheet" href="{{ asset('assets/css/Piscina/administrar.css') }}" type="text/css">-->
+@section('meta')
+  <meta name="csrf-token" content="{{ csrf_token() }}">
+@endsection
+<script src = "{{ asset('assets/js/jquery-3.5.1.min.js') }}">
+</script>
+
+<script>
+  $(document).ready(function(){
+    var table = $('#data');
+    table.hide();
+    replaceTable();
+
+    setInterval(replaceTable, 60*1000)
+
+    function replaceTable(){
+
+        $.ajaxSetup({
+
+            headers: {
+    
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+    
+            }
+    
+        });
+    
+        $.ajax({
+            url:"{{ route('ajax.index') }}",
+            type:'POST',   
+            data: {'id':"{{ $piscina->ID_PISCINA }}"},         
+            success:function(data){
+                table.fadeOut("fast");
+                table.html(data);
+                table.fadeIn("fast");
+            },
+            error:function(jqXHR, textStatus, errorThrown){
+                console.log("Error: "+textStatus + " " + errorThrown);
+            }
+        });
+    }
+});
+</script>
 
 {{-- Información de la piscna --}}
 
@@ -41,48 +83,7 @@ switch ($piscina->condicion->ID_CONDICION) {
 <br><br>
 {{-- Tabla de mediciones --}}
 
-    <div class="row">
-      <div class="col-md-12">
-        <div class="table-responsive">
-          <table class="table table-bordered table-condensed table-responsive-md table-hover" style="height: 50px; overflow-y: scroll;">
-            <thead class="text-center">
-              <tr>
-                <th>Fecha y Hora</th>
-                <th>Cloro</th>
-                <th>PH</th>
-              </tr>
-            </thead>
-            <div class="overflow-auto">
-              <tbody class="text-center my-tbody">
-                @forelse ($mediciones as $md)
-                  @php
-                    // determinar el estado del cloro para aplicar un color a la fila
-                    $stdCloro = "";
-                    switch ($md->getEstadoCloro()) {
-                        case '1':
-                            $stdCloro = "table-danger";
-                            break;
-                        case '2':
-                    }
-                    // determinar el estado del cloro para aplicar un color a la fila
-                    $stdPh = "";
-                    switch ($md->getEstadoPh()) {
-                        case '1':
-                            $stdPh = "table-danger";
-                            break;
-                    }
-                  @endphp
-                  <tr>
-                      <td>{{$md->FECHA_Y_HORA}}</td>
-                      <td class="{{$stdCloro}}">{{$md->CLORO}}</td>
-                      <td class="{{$stdPh}}">{{$md->PH}}</td>
-                  </tr>
-                @endforeach
-              </tbody>      
-            </div>
-          </table>
-        </div>
-      </div>
-    </div>
+    <div class="row" id="data">
+      
   </div>
 @endsection
