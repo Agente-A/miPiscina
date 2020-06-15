@@ -106,4 +106,37 @@ class AdministradorController extends Controller
     {
         //
     }
+
+    public function login(Request $request)
+    {
+        $data = request()->validate([  //Solicitar Datos y validarlos
+            'email' =>  ['required','email'],
+            'password'  =>   'required',
+        ],[                             //Mensajes de error en caso de fallo de validación
+            'email.required'=>  'El campo correo es obligatorio!',
+            'email.email'   =>  'Por favor ingresa un correo válido',
+            'password.required' =>  'El campo contraseña es obligatorio!'
+        ]);
+
+        $admin = Administrador::where('CORREO', '=', $data['email'])
+                            ->where('CONTRASENA', '=', $data['password'])
+                            ->first();
+
+        if ($admin != null)
+        {
+            session(['admin' => $admin]);
+            return redirect()->route('index');
+        }
+        else
+        {
+            return back()->withErrors(['msg'=>'Usuario o contraseña incorrectos']);
+        }
+        
+    }
+
+    public function logout()
+    {
+        session()->forget('admin');
+        return redirect()->route('index');
+    }
 }

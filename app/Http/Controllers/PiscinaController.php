@@ -88,9 +88,10 @@ class PiscinaController extends Controller
      * @param  \App\Piscina  $piscina
      * @return \Illuminate\Http\Response
      */
-    public function edit(Piscina $piscina)
+    public function edit($id)
     {
-        //
+        $piscina = Piscina::where('id_piscina',$id)->first();
+        return view('Piscina.modificar', compact('piscina'));
     }
 
     /**
@@ -100,9 +101,34 @@ class PiscinaController extends Controller
      * @param  \App\Piscina  $piscina
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Piscina $piscina)
+    public function update(Request $request, $id)
     {
-        //
+        $data = request()->validate([  //Solicitar Datos y validarlos
+            'nom'       =>  'required',
+            'tamano'    =>  'required',
+            'sensor'    =>  'required'
+        ],[                             //Mensajes de error en caso de fallo de validación
+            'nom.required'      =>  'El campo nombre es obligatorio!',
+            'tamano.required'   =>  'El campo tamaño es obligatorio!',
+            'sensor.required'   =>  'El campo sensor es obligatorio!',
+        ]);
+
+        if (!Raspberry::where('id_raspberry', '=', $data['sensor'])->exists()) {
+            Raspberry::create([
+                'id_raspberry'  =>  $data['sensor'],
+                'estado'        =>  '1'
+            ]);
+         }
+         
+        $piscina = Piscina::where('id_piscina',$id)
+            ->update([         // Modificar
+                'nombre'        =>  $data['nom'],
+                'tamano'        =>  $data['tamano'],
+                'id_raspberry'  =>  $data['sensor'],
+                'condicion'     =>  '4'
+            ]);
+
+        return redirect()->route('index');
     }
 
     /**

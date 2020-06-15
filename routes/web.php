@@ -26,9 +26,23 @@ Route::get('/admin/registro', 'AdministradorController@create')
     // Registro de admin en la DB
 Route::post('/admin/','AdministradorController@store');
 
+    // Iniciar Sesion
+Route::post('/admin/login', 'AdministradorController@login');
+
+    // Iniciar Sesion
+Route::get('/admin/logout', 'AdministradorController@logout')
+    ->name('admin.logout');
+
     // Detalles de una piscina
 Route::get('/piscina/{piscina}/administrar','PiscinaController@show')
     ->name('piscina.show');
+
+    // Formulario Modificacion piscina
+Route::get('/piscina/{piscina}/modificar','PiscinaController@edit')
+    ->name('piscina.edit');   
+    
+    // Modificacion de piscina en la DB
+Route::put('/piscina/{piscina}','PiscinaController@update');
 
     // Formulario registro piscina
 Route::get('/piscina/registro','PiscinaController@create')

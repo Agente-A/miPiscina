@@ -19,42 +19,110 @@
           <button class="navbar-toggler d-lg-none" type="button" data-toggle="collapse" data-target="#menu" aria-controls="menu"
               aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
           <div class="collapse navbar-collapse" id="menu">
-              <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
+              <ul class="navbar-nav mr-auto mt-2 mt-lg-0" style="flex-grow: 1">
 
                   {{-- Direcccional al index --}}
                   
                   <li class="nav-item active">
-                      <a class="nav-link text-white" href="/">Inicio <span class="sr-only">(current)</span></a>
+                      <a class="btn btn-primary" href="/">Inicio <span class="sr-only">(current)</span></a>
                   </li>
 
                   {{-- Direccionar al login --}}
       
                   <li class="nav-item">
-                      <a class="nav-link text-white" href="logIn">Iniciar Sesción</a>
+
                   </li>
                   <li class="nav-item">
-                    <a class="nav-item nav-link text-white" href="/piscina/administrar">Administrar Piscinas</a>
+                    <a class="btn btn-primary" href="quienes_somos.html">Quienes Somos</a>
                   </li>
                   <li class="nav-item">
-                    <a class="nav-item nav-link text-white" href="monitorear_piscinas.html">Monitorear Piscinas</a>
+                    <a class="btn btn-primary" href="lista_ayuda.html">Lista de Ayuda</a>
                   </li>
-                  <li class="nav-item">
-                    <a class="nav-item nav-link text-white" href="quienes_somos.html">Quienes Somos</a>
-                  </li>
-                  <li class="nav-item">
-                    <a class="nav-item nav-link text-white" href="lista_ayuda.html">Lista de Ayuda</a>
-                  </li>
+                  <li class="nav-item ml-auto">
+                    @if (session('admin'))
+                  <a class="btn btn-danger" href="{{ route('admin.logout') }}">Cerrar Sesion</a>
+                    @else
+                      <!-- Button trigger modal -->
+                      <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#logIn">
+                        Iniciar Sesión
+                      </button>
+                    @endif
+                 </li> 
           </div>
       </nav>
       <br>
+      
+      @if ($errors->has('msg'))
+        <script src = "{{ asset('assets/js/jquery-3.5.1.min.js') }}">
+        </script>
+        <script>
+          $(document).ready(function(){
+              $('#logIn').modal('show');
+          });
+        </script>
+      @endif
+    
+    <!-- Modal Login -->
+    <div class="modal fade" id="logIn" tabindex="-1" role="dialog" aria-labelledby="modelTitleId" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Iniciar Sesion</h5>
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+              </div>
+          <div class="modal-body">
+            <div class="container-fluid">
+                <div class="container">
+                  <form method="POST" action="{{ url('/admin/login') }}">
+                    {{ csrf_field() }}
+                    <div class="form-group row">
+                      <label for="email" class="col-sm-12 col-form-label">Correo</label>
+                      <div class="col-sm-12">
+                        <input type="email" class="form-control" name="email" id="email" placeholder="ejemplo@gmail.cl">
+                      </div>
+                    </div>
+                    <fieldset class="form-group row">
+                      <label for="password" class="col-sm-12 col-form-label">Contraseña</label>
+                      <div class="col-sm-12">
+                        <input type="password" class="form-control" name="password" id="password" placeholder="123456789">
+                      </div>
+                    </fieldset>                
+                    @if ($errors->has('msg'))
+                        <small id="help" class="form-text text-danger">{{ $errors->first('msg') }}</small>
+                      @endif
+                </div>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <div class="form-group row">
+              <div class="col-md-12">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+              </div>
+            </div>
+            <div class="form-group row">
+              <div class="col-md-12">
+                <button type="submit" class="btn btn-primary">Ingresar</button>
+              </div>
+            </div>
+          </div>
+        </form>
+        </div>
+      </div>
+    </div>
+
+
     <main>
       @yield('main')
     </main>
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
-    <script src="{{ asset('assets/js/jquery-3.5.1.min.js') }}" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+    {{-- {{ asset('assets/js/jquery-3.5.1.min.js') }} --}}
+    
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js" integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous"></script>
     <footer>
       <div class="container-fluid">
         <div class="row py-5">

@@ -31,7 +31,7 @@ class PiscinaModuleTest extends TestCase
         $this->get('/')
             ->assertStatus(200)
             ->assertSee('Piscina A')
-            ->assertSee('Piscina A');
+            ->assertSee('Piscina B');
     }
 
     /** @test */
