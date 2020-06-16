@@ -29,7 +29,7 @@ Route::post('/admin/','AdministradorController@store');
     // Iniciar Sesion
 Route::post('/admin/login', 'AdministradorController@login');
 
-    // Iniciar Sesion
+    // Cerrar Sesion
 Route::get('/admin/logout', 'AdministradorController@logout')
     ->name('admin.logout');
 
@@ -39,7 +39,7 @@ Route::get('/piscina/{piscina}/administrar','PiscinaController@show')
 
     // Formulario Modificacion piscina
 Route::get('/piscina/{piscina}/modificar','PiscinaController@edit')
-    ->name('piscina.edit');   
+    ->name('piscina.edit');    
     
     // Modificacion de piscina en la DB
 Route::put('/piscina/{piscina}','PiscinaController@update');

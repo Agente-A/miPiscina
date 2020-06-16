@@ -16,3 +16,4 @@ $factory->define(Piscina::class, function (Faker $faker) {
         'id_admin'      =>  Administrador::inRandomOrder()->value('ID_ADMIN'),
     ];
 });
+ 

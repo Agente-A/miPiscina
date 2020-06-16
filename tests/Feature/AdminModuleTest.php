@@ -213,4 +213,86 @@ class AdminModuleTest extends TestCase
             'CORREO'    =>  'un.correo@algo.cl'
         ]);
     }
+
+    /** @test */
+    public function login_exitoso()
+    {
+        // Volver a correr el seeder de administrador para limpiar los datos y generar datos de prueba
+        $this->artisan('db:seed --class=AdministradorSeeder'); 
+
+        factory(Administrador::class)->create([
+            'correo'        =>  'correo@gmail.cl',
+            'contrasena'    =>  '1234'
+        ]);
+
+        $this->assertDatabaseHas('ADMINISTRADOR', [
+            'CORREO'        =>  'correo@gmail.cl',
+            'CONTRASENA'    =>  '1234'
+        ]);
+
+        $admin = Administrador::where('CORREO', '=', 'correo@gmail.cl')
+                        ->where('CONTRASENA', '=', '1234')
+                        ->first();
+
+        $this->post('/admin/login', [
+            'email'     =>  'correo@gmail.cl',
+            'password'  =>  '1234'
+        ])
+        ->assertRedirect(route('index'))
+        ->assertSessionHas('admin', $value = $admin);
+    }
+
+    /** @test */
+    public function login_correo_obligatorio()
+    {
+        $this->post('/admin/login', [
+            'email'     =>  '',
+            'password'  =>  '4321'
+        ])
+        ->assertRedirect(route('index'))
+        ->assertSessionHasErrors('email')
+        ->assertSessionMissing('admin');
+    }
+
+    /** @test */
+    public function login_password_obligatorio()
+    {
+        $this->post('/admin/login', [
+            'email'     =>  'correo@gmail.cl',
+            'password'  =>  ''
+        ])
+        ->assertRedirect(route('index'))
+        ->assertSessionHasErrors('password')
+        ->assertSessionMissing('admin');
+    }
+
+    /** @test */
+    public function login_fallido()
+    {
+        // Volver a correr el seeder de administrador para limpiar los datos y generar datos de prueba
+        $this->artisan('db:seed --class=AdministradorSeeder'); 
+
+        factory(Administrador::class)->create([
+            'correo'        =>  'correo@gmail.cl',
+            'contrasena'    =>  '1234'
+        ]);
+
+        $this->assertDatabaseHas('ADMINISTRADOR', [
+            'CORREO'        =>  'correo@gmail.cl',
+            'CONTRASENA'    =>  '1234'
+        ]);
+
+        $admin = Administrador::where('CORREO', '=', 'correo@gmail.cl')
+                        ->where('CONTRASENA', '=', '1234')
+                        ->first();
+
+        $this->post('/admin/login', [
+            'email'     =>  'un.correo@gmail.cl',
+            'password'  =>  '4321'
+        ])
+        ->assertRedirect(route('index'))
+        ->assertSessionHasErrors('msg')
+        ->assertSessionMissing('admin');
+    }
+    
 }

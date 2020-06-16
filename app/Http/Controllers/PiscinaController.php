@@ -67,7 +67,7 @@ class PiscinaController extends Controller
 
         return redirect()->route('index');
     }
-
+ 
     /**
      * Display the specified resource.
      *
@@ -124,8 +124,7 @@ class PiscinaController extends Controller
             ->update([         // Modificar
                 'nombre'        =>  $data['nom'],
                 'tamano'        =>  $data['tamano'],
-                'id_raspberry'  =>  $data['sensor'],
-                'condicion'     =>  '4'
+                'id_raspberry'  =>  $data['sensor']
             ]);
 
         return redirect()->route('index');
